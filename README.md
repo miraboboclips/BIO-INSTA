@@ -1,7 +1,7 @@
 # MIRABOBO · Mini bio do Instagram
 
-- **Mini bio (link para a bio):** https://souzarlk.github.io/BIO-INSTA/
-- **Painel:** https://souzarlk.github.io/BIO-INSTA/painel.html
+- **Mini bio (link para a bio):** https://miraboboclips.github.io/BIO-INSTA/
+- **Painel:** https://miraboboclips.github.io/BIO-INSTA/painel.html
 
 ## Como usar o painel
 1. Abra o painel e, na seção **Conexão com o GitHub**, cole um token (instruções no próprio painel) e clique em **Salvar conexão**.
