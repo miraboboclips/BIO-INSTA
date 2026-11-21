@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIRABOBO · PDF</title>
+<meta name="theme-color" content="#050b1f">
+<link rel="icon" href="logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030817;--azul:#1e8fff;--azul2:#3fb3ff;--celeste:#7cc8ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:radial-gradient(ellipse at 50% 0,#0d2a6b,#030817 70%) fixed;color:#f4f9ff;min-height:100vh}
+header{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(3,8,23,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(124,200,255,.2)}
+header img{width:38px;height:38px;border-radius:50%;object-fit:cover;box-shadow:0 0 12px var(--azul)}
+header h1{flex:1;min-width:0;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:10px;font-weight:600;font-size:13px;color:#fff;text-decoration:none;background:linear-gradient(135deg,var(--azul2),#1557d6);white-space:nowrap}
+.b.sec{background:rgba(255,255,255,.1)}
+#paginas{max-width:900px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px;align-items:center}
+canvas{width:100%;height:auto;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);background:#fff}
+.msg{text-align:center;padding:60px 16px;color:#a9cdf5}
+.bola{width:42px;height:42px;margin:0 auto 14px;border-radius:50%;border:4px solid rgba(124,200,255,.25);border-top-color:var(--azul2);animation:g .8s linear infinite}
+@keyframes g{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <a class="b sec" href="./">←</a>
+  <img src="logo.svg" alt="">
+  <h1 id="tit">Documento</h1>
+  <a class="b" id="baixar" href="#" target="_blank" rel="noopener">Baixar</a>
+</header>
+<div id="paginas"><div class="msg"><div class="bola"></div>Carregando PDF...</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search), f=q.get('f')||'', t=q.get('t')||'Documento';
+  var ok=/^https?:\/\//i.test(f)||/^pdfs\/[^:]+$/i.test(f);
+  var box=document.getElementById('paginas');
+  document.getElementById('tit').textContent=t; document.title='MIRABOBO · '+t;
+  if(!ok){box.innerHTML='<p class="msg">PDF não encontrado.</p>';document.getElementById('baixar').style.display='none';return;}
+  document.getElementById('baixar').href=f;
+  function falha(){
+    box.innerHTML='<div class="msg">Não foi possível exibir o PDF aqui.<br><br><a class="b" href="'+f.replace(/"/g,'%22')+'" target="_blank" rel="noopener">Abrir PDF</a></div>';
+  }
+  if(!window.pdfjsLib){falha();return;}
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.getDocument(f).promise.then(function(pdf){
+    box.innerHTML='';
+    var larg=Math.min(box.clientWidth-32,868), dpr=Math.min(window.devicePixelRatio||1,2), n=1;
+    (function prox(){
+      if(n>pdf.numPages) return;
+      pdf.getPage(n).then(function(pg){
+        var v1=pg.getViewport({scale:1}), esc=larg/v1.width, vp=pg.getViewport({scale:esc*dpr});
+        var cv=document.createElement('canvas'); cv.width=vp.width; cv.height=vp.height;
+        box.appendChild(cv);
+        return pg.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+      }).then(function(){n++;prox();});
+    })();
+  }).catch(falha);
+})();
+</script>
+</body>
+</html>
