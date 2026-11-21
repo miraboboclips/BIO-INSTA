@@ -230,7 +230,7 @@ details summary{cursor:pointer;color:var(--celeste);font-size:12.5px;font-weight
   var K_RASC='mirabobo_rascunho', K_PUB='mirabobo_publicado', K_GH='mirabobo_github';
   var $=function(id){return document.getElementById(id);};
   var publicado=null, rascunho=null, links=[];
-  var gh=lerJSON(K_GH)||{owner:'souzarlk',repo:'BIO-INSTA',branch:'main',token:''};
+  var gh=lerJSON(K_GH)||{owner:'miraboboclips',repo:'BIO-INSTA',branch:'main',token:''}; if(gh.owner==='souzarlk'){gh.owner='miraboboclips';}
 
   document.querySelectorAll('[data-ic]').forEach(function(e){e.innerHTML=icone(e.getAttribute('data-ic'));});
 
