@@ -1,0 +1,56 @@
+{
+  "perfil": {
+    "nome1": "MIRA",
+    "nome2": "BOBO",
+    "frases": "Os melhores clipes do futebol 🔥|Lances, gols e resenha ⚽|Baixe o app e não perca nada 📲",
+    "logo": "logo.svg",
+    "verificado": true
+  },
+  "aviso": {
+    "ativo": true,
+    "titulo": "AVISO",
+    "texto": "🚀 Novidades chegando no app MIRABOBO!\nToque nos botões abaixo e fique por dentro.",
+    "estilo": "azul"
+  },
+  "whatsapp": {
+    "numero": "",
+    "mensagem": "Olá! Vim pelo Instagram e quero saber mais sobre o app MIRABOBO 📲",
+    "flutuante": true
+  },
+  "links": [
+    {
+      "id": "l1",
+      "tipo": "link",
+      "titulo": "Baixar o app MIRABOBO",
+      "descricao": "Clipes e lances direto no seu celular",
+      "url": "https://",
+      "icone": "app",
+      "destaque": true,
+      "ativo": true
+    },
+    {
+      "id": "l2",
+      "tipo": "whatsapp",
+      "titulo": "Fale comigo no WhatsApp",
+      "descricao": "Atendimento rápido",
+      "url": "",
+      "icone": "whatsapp",
+      "destaque": false,
+      "ativo": true
+    },
+    {
+      "id": "l3",
+      "tipo": "pdf",
+      "titulo": "Conheça o app (PDF)",
+      "descricao": "Tudo sobre o MIRABOBO explicado",
+      "url": "",
+      "icone": "pdf",
+      "destaque": false,
+      "ativo": true
+    }
+  ],
+  "redes": {
+    "instagram": "miraboboclips",
+    "tiktok": "miraboboclips2"
+  }
+}
