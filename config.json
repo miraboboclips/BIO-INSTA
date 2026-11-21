@@ -2,18 +2,18 @@
   "perfil": {
     "nome1": "MIRA",
     "nome2": "BOBO",
-    "frases": "Os melhores clipes do futebol 🔥|Lances, gols e resenha ⚽|Baixe o app e não perca nada 📲",
+    "frases": "ADQUIRA O APP PELO SITE OU PELO NOSSO WHATSAPP",
     "logo": "logo.svg",
     "verificado": true
   },
   "aviso": {
     "ativo": true,
     "titulo": "AVISO",
-    "texto": "🚀 Novidades chegando no app MIRABOBO!\nToque nos botões abaixo e fique por dentro.",
-    "estilo": "azul"
+    "texto": "⚠️ SE O SITE ESTIVER FORA DO AR (EM MANUTENÇÃO) NOS CHAME PELO NOSSO CANAL DE ATENDIMENTO VIA WHATSAPP",
+    "estilo": "vermelho"
   },
   "whatsapp": {
-    "numero": "",
+    "numero": "5513974083125",
     "mensagem": "Olá! Vim pelo Instagram e quero saber mais sobre o app MIRABOBO 📲",
     "flutuante": true
   },
@@ -21,9 +21,9 @@
     {
       "id": "l1",
       "tipo": "link",
-      "titulo": "Baixar o app MIRABOBO",
-      "descricao": "Clipes e lances direto no seu celular",
-      "url": "https://",
+      "titulo": "SITE",
+      "descricao": "GERADOR DE CLIPES AUTOMATICO",
+      "url": "https://https://coat-skimpily-decimal.ngrok-free.dev",
       "icone": "app",
       "destaque": true,
       "ativo": true
@@ -31,20 +31,10 @@
     {
       "id": "l2",
       "tipo": "whatsapp",
-      "titulo": "Fale comigo no WhatsApp",
+      "titulo": "FALAR COM UM ATENDENTE",
       "descricao": "Atendimento rápido",
       "url": "",
       "icone": "whatsapp",
-      "destaque": false,
-      "ativo": true
-    },
-    {
-      "id": "l3",
-      "tipo": "pdf",
-      "titulo": "Conheça o app (PDF)",
-      "descricao": "Tudo sobre o MIRABOBO explicado",
-      "url": "",
-      "icone": "pdf",
       "destaque": false,
       "ativo": true
     }
