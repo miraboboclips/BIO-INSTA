@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel MIRABOBO</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#050b1f">
+<link rel="icon" href="logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040a1c;--card:#0a1838;--card2:#0e2048;--borda:rgba(124,200,255,.18);--azul:#1e8fff;--azul2:#3fb3ff;--celeste:#7cc8ff;--txt:#eaf4ff;--sub:#93b4dc;--ok:#25d366;--erro:#ff4d6d;--ouro:#ffc93c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:radial-gradient(ellipse at 20% -10%,#0e2a66,var(--bg) 55%) fixed;color:var(--txt);min-height:100vh;font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--celeste)}
+
+.topo{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;background:rgba(4,10,28,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--borda)}
+.topo img{width:40px;height:40px;border-radius:50%;object-fit:cover;box-shadow:0 0 14px var(--azul)}
+.marca{font-family:'Bangers',cursive;font-size:26px;letter-spacing:2px;line-height:1}
+.marca span{color:var(--azul2)}
+.marca small{display:block;font-family:'Poppins';font-size:11px;letter-spacing:0;color:var(--sub);font-weight:500}
+.status{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06)}
+.status i{width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.status.pend i{background:var(--ouro);box-shadow:0 0 8px var(--ouro);animation:p 1s infinite}
+@keyframes p{50%{opacity:.3}}
+.esp{flex:1}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 15px;border-radius:11px;border:1px solid var(--borda);background:rgba(255,255,255,.06);cursor:pointer;font-weight:600;font-size:13px;transition:.15s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.pri{background:linear-gradient(135deg,var(--azul2),#1557d6);border:none;box-shadow:0 4px 16px rgba(30,143,255,.35)}
+.btn.pri:hover{filter:brightness(1.12)}
+.btn.grande{padding:11px 20px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#ffd35c,#ff9f1c);color:#2b1800;border:none;box-shadow:0 4px 18px rgba(255,190,60,.4)}
+.btn.perigo{color:#ffb3c0;border-color:rgba(255,77,109,.35)}
+.btn.mini{padding:6px 9px;font-size:12px;border-radius:8px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn svg{width:16px;height:16px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;max-width:1200px;margin:0 auto;padding:22px 20px 60px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.lado{order:-1}}
+.col{display:flex;flex-direction:column;gap:18px;min-width:0}
+
+.card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--borda);border-radius:18px;padding:18px 18px 16px}
+.card h2{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;margin-bottom:4px}
+.card h2 .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(63,179,255,.15);color:var(--azul2)}
+.card h2 .ic svg{width:17px;height:17px}
+.card h2 .sujo{margin-left:auto;font-size:11px;font-weight:600;color:var(--ouro);display:none}
+.card.alterado h2 .sujo{display:inline}
+.card.alterado{border-color:rgba(255,201,60,.45)}
+.desc{color:var(--sub);font-size:12.5px;margin-bottom:14px}
+.linha{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.linha{grid-template-columns:1fr}}
+.campo{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;min-width:0}
+.campo label{font-size:12px;font-weight:600;color:var(--sub)}
+.campo input[type=text],.campo input[type=url],.campo input[type=tel],.campo input[type=password],.campo select,.campo textarea{
+  width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--borda);background:rgba(2,8,24,.55);outline:none;transition:border-color .15s}
+.campo textarea{min-height:84px;resize:vertical;line-height:1.5}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--azul2);box-shadow:0 0 0 3px rgba(63,179,255,.15)}
+.campo small{font-size:11.5px;color:#7f9fc9}
+select option{background:#0a1838}
+.chk{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:500;margin:2px 16px 12px 0;user-select:none}
+.chk input{width:18px;height:18px;accent-color:var(--azul)}
+.acoes{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+
+.lk{border:1px solid var(--borda);border-radius:14px;padding:12px 12px 4px;margin-bottom:12px;background:rgba(2,8,24,.35)}
+.lk.off{opacity:.55}
+.lk-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.lk-num{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px;background:rgba(63,179,255,.18);color:var(--azul2)}
+.lk-top b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pdfbox{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pdfbox input[type=text]{flex:1;min-width:160px}
+.arquivo{position:relative;overflow:hidden}
+.arquivo input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.celular{position:sticky;top:86px;width:100%;max-width:380px;margin:0 auto;border-radius:44px;padding:12px;background:#000;box-shadow:0 0 0 2px #1d2a44,0 20px 60px rgba(0,0,0,.6),0 0 60px rgba(30,143,255,.25)}
+.celular::before{content:"";position:absolute;top:20px;left:50%;width:90px;height:22px;margin-left:-45px;border-radius:20px;background:#000;z-index:2}
+.celular iframe{display:block;width:100%;height:720px;max-height:calc(100vh - 140px);border:0;border-radius:34px;background:#030817}
+.lado h3{text-align:center;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:10px;letter-spacing:1px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);z-index:50;padding:12px 18px;border-radius:12px;background:#0f2a5c;border:1px solid var(--azul2);font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.2,1.4,.4,1);max-width:calc(100% - 32px)}
+.toast.on{transform:translate(-50%,0)}
+.toast.erro{background:#4a0f1d;border-color:var(--erro)}
+
+.modal{position:fixed;inset:0;z-index:40;display:none;place-items:center;padding:16px;background:rgba(0,4,14,.75);backdrop-filter:blur(6px)}
+.modal.on{display:grid}
+.modal .card{max-width:520px;width:100%;animation:m .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes m{from{transform:scale(.85);opacity:0}}
+.linkfinal{display:flex;gap:8px;margin:14px 0}
+.linkfinal input{flex:1;min-width:0;padding:12px;border-radius:10px;border:1px solid var(--azul2);background:rgba(2,8,24,.6);font-weight:600;color:var(--celeste)}
+.passos{margin:10px 0 0 18px;color:var(--sub);font-size:12.5px;line-height:1.7}
+.conn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.conn i{width:8px;height:8px;border-radius:50%;background:var(--erro)}
+.conn.ok i{background:var(--ok)}
+details summary{cursor:pointer;color:var(--celeste);font-size:12.5px;font-weight:600;margin-bottom:8px}
+.prog{height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px;display:none}
+.prog i{display:block;height:100%;width:40%;background:linear-gradient(90deg,var(--azul),var(--celeste));animation:pr 1s linear infinite}
+@keyframes pr{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <img src="logo.svg" alt="">
+  <div class="marca">MIRA<span>BOBO</span><small>Painel da mini bio</small></div>
+  <span class="status" id="status"><i></i><span>Carregando…</span></span>
+  <span class="esp"></span>
+  <button class="btn perigo" id="descartar" title="Volta para a versão que está online">Descartar rascunho</button>
+  <button class="btn grande" id="gerar">🚀 Gerar link</button>
+</header>
+
+<div class="grid">
+  <div class="col">
+
+    <!-- CONEXÃO -->
+    <section class="card" id="sec-conexao">
+      <h2><span class="ic" data-ic="globe"></span>Conexão com o GitHub <span class="conn" id="conn" style="margin-left:auto"><i></i><span>Não conectado</span></span></h2>
+      <p class="desc">Necessária para publicar (botão “Gerar link”) e para enviar PDFs e logo. A chave fica salva só neste navegador.</p>
+      <div class="linha">
+        <div class="campo"><label>Usuário do GitHub</label><input type="text" id="gh-owner"></div>
+        <div class="campo"><label>Repositório</label><input type="text" id="gh-repo"></div>
+      </div>
+      <div class="linha">
+        <div class="campo"><label>Branch</label><input type="text" id="gh-branch"></div>
+        <div class="campo"><label>Token de acesso</label><input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off"></div>
+      </div>
+      <details>
+        <summary>Como criar o token (1 vez só)</summary>
+        <ol class="passos">
+          <li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+          <li>Nome: “Painel Mirabobo”. Validade: a que preferir.</li>
+          <li><b>Repository access</b> → <i>Only select repositories</i> → escolha <b>BIO-INSTA</b>.</li>
+          <li><b>Permissions</b> → <b>Contents</b> → <i>Read and write</i>.</li>
+          <li>Clique em <b>Generate token</b>, copie e cole no campo acima.</li>
+        </ol>
+      </details>
+      <div class="acoes">
+        <button class="btn" id="testar-conn">Testar conexão</button>
+        <button class="btn pri" id="salvar-conn">Salvar conexão</button>
+      </div>
+    </section>
+
+    <!-- PERFIL -->
+    <section class="card" id="sec-perfil">
+      <h2><span class="ic" data-ic="crown"></span>Perfil<span class="sujo">● não salvo</span></h2>
+      <p class="desc">Nome, frases animadas e logo do topo da página.</p>
+      <div class="linha">
+        <div class="campo"><label>Nome (parte branca)</label><input type="text" id="p-nome1" maxlength="20"></div>
+        <div class="campo"><label>Nome (parte azul)</label><input type="text" id="p-nome2" maxlength="20"></div>
+      </div>
+      <div class="campo"><label>Frases que ficam “digitando” em loop (uma por linha)</label><textarea id="p-frases"></textarea></div>
+      <div class="campo"><label>Logo</label>
+        <div class="pdfbox"><input type="text" id="p-logo"><label class="btn arquivo">Enviar imagem<input type="file" id="p-logo-arq" accept="image/*"></label></div>
+        <div class="prog" id="p-logo-prog"><i></i></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="p-verif"> Mostrar selo de verificado</label>
+      <div class="acoes"><button class="btn pri" data-salvar="perfil">Salvar alteração</button></div>
+    </section>
+
+    <!-- AVISO -->
+    <section class="card" id="sec-aviso">
+      <h2><span class="ic" data-ic="megaphone"></span>Quadro de aviso<span class="sujo">● não salvo</span></h2>
+      <p class="desc">Aparece logo acima dos botões, com borda animada.</p>
+      <label class="chk"><input type="checkbox" id="a-ativo"> Mostrar quadro de aviso</label>
+      <div class="linha">
+        <div class="campo"><label>Título</label><input type="text" id="a-titulo" maxlength="30"></div>
+        <div class="campo"><label>Cor</label>
+          <select id="a-estilo"><option value="azul">Azul</option><option value="dourado">Dourado</option><option value="vermelho">Vermelho</option><option value="verde">Verde</option></select>
+        </div>
+      </div>
+      <div class="campo"><label>Mensagem</label><textarea id="a-texto" maxlength="600"></textarea><small>Pode usar emojis e quebrar linhas.</small></div>
+      <div class="acoes"><button class="btn pri" data-salvar="aviso">Salvar alteração</button></div>
+    </section>
+
+    <!-- WHATSAPP -->
+    <section class="card" id="sec-whatsapp">
+      <h2><span class="ic" data-ic="whatsapp"></span>WhatsApp<span class="sujo">● não salvo</span></h2>
+      <p class="desc">Quem tocar no botão do WhatsApp já abre a conversa com esta mensagem escrita.</p>
+      <div class="campo"><label>Número com DDI e DDD</label><input type="tel" id="w-numero" placeholder="55 11 91234-5678"><small>Ex.: 55 + DDD + número. Só números são usados.</small></div>
+      <div class="campo"><label>Mensagem automática</label><textarea id="w-mensagem" maxlength="700"></textarea></div>
+      <label class="chk"><input type="checkbox" id="w-flut"> Mostrar botão flutuante do WhatsApp no canto da tela</label>
+      <div class="acoes">
+        <button class="btn" id="w-testar">Testar no WhatsApp</button>
+        <button class="btn pri" data-salvar="whatsapp">Salvar alteração</button>
+      </div>
+    </section>
+
+    <!-- LINKS -->
+    <section class="card" id="sec-links">
+      <h2><span class="ic" data-ic="link"></span>Botões / Links<span class="sujo">● não salvo</span></h2>
+      <p class="desc">Tipos: <b>Link</b> (qualquer site), <b>PDF</b> (envie o arquivo ou cole o endereço) e <b>WhatsApp</b> (usa o número e a mensagem acima).</p>
+      <div id="lista"></div>
+      <div class="acoes" style="justify-content:space-between">
+        <button class="btn" id="add-link">+ Adicionar botão</button>
+        <button class="btn pri" data-salvar="links">Salvar alteração</button>
+      </div>
+    </section>
+
+    <!-- REDES -->
+    <section class="card" id="sec-redes">
+      <h2><span class="ic" data-ic="instagram"></span>Rodapé · Redes sociais<span class="sujo">● não salvo</span></h2>
+      <p class="desc">Aparecem no rodapé com o ícone de cada rede.</p>
+      <div class="linha">
+        <div class="campo"><label>Instagram (@)</label><input type="text" id="r-ig"></div>
+        <div class="campo"><label>TikTok (@)</label><input type="text" id="r-tt"></div>
+      </div>
+      <div class="acoes"><button class="btn pri" data-salvar="redes">Salvar alteração</button></div>
+    </section>
+  </div>
+
+  <aside class="lado">
+    <h3>PRÉVIA (RASCUNHO SALVO)</h3>
+    <div class="celular"><iframe id="previa" src="index.html?preview=1" title="Prévia"></iframe></div>
+  </aside>
+</div>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <h2><span class="ic" data-ic="zap"></span><span id="m-tit">Link gerado!</span></h2>
+    <p class="desc" id="m-desc">Sua mini bio foi publicada. Copie o link e cole na bio do Instagram.</p>
+    <div class="linkfinal"><input type="text" id="m-link" readonly><button class="btn pri" id="m-copiar">Copiar</button></div>
+    <p class="desc">As alterações aparecem no link em cerca de 1 minuto. O link é sempre o mesmo — não precisa trocar na bio a cada mudança.</p>
+    <div class="acoes"><a class="btn" id="m-abrir" target="_blank" rel="noopener">Abrir mini bio</a><button class="btn pri" id="m-fechar">Fechar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="icons.js"></script>
+<script>
+(function(){
+  var K_RASC='mirabobo_rascunho', K_PUB='mirabobo_publicado', K_GH='mirabobo_github';
+  var $=function(id){return document.getElementById(id);};
+  var publicado=null, rascunho=null, links=[];
+  var gh=lerJSON(K_GH)||{owner:'souzarlk',repo:'BIO-INSTA',branch:'main',token:''};
+
+  document.querySelectorAll('[data-ic]').forEach(function(e){e.innerHTML=icone(e.getAttribute('data-ic'));});
+
+  function lerJSON(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+  function gravar(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Não foi possível salvar neste navegador',true);}}
+  function clone(o){return JSON.parse(JSON.stringify(o));}
+  function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]});}
+  var tt;
+  function toast(msg,erro){var t=$('toast');t.textContent=msg;t.className='toast on'+(erro?' erro':'');clearTimeout(tt);tt=setTimeout(function(){t.className='toast'+(erro?' erro':'');},3200);}
+
+  /* ---------- STATUS ---------- */
+  function atualizaStatus(){
+    var pend = JSON.stringify(rascunho)!==JSON.stringify(publicado);
+    var s=$('status'); s.className='status'+(pend?' pend':'');
+    s.lastElementChild.textContent = pend?'Alterações salvas, ainda não publicadas':'Tudo publicado';
+    $('descartar').style.display = pend?'':'none';
+  }
+  function enviaPrevia(){
+    var f=$('previa'); if(f.contentWindow) f.contentWindow.postMessage({tipo:'config',config:rascunho},location.origin);
+  }
+  window.addEventListener('message',function(e){ if(e.origin===location.origin && e.data && e.data.tipo==='pronto') enviaPrevia(); });
+
+  /* ---------- PREENCHER FORMULÁRIOS ---------- */
+  function preencher(){
+    var p=rascunho.perfil, a=rascunho.aviso, w=rascunho.whatsapp, r=rascunho.redes;
+    $('p-nome1').value=p.nome1||''; $('p-nome2').value=p.nome2||'';
+    $('p-frases').value=(p.frases||'').split('|').join('\n'); $('p-logo').value=p.logo||''; $('p-verif').checked=!!p.verificado;
+    $('a-ativo').checked=!!a.ativo; $('a-titulo').value=a.titulo||''; $('a-estilo').value=a.estilo||'azul'; $('a-texto').value=a.texto||'';
+    $('w-numero').value=w.numero||''; $('w-mensagem').value=w.mensagem||''; $('w-flut').checked=!!w.flutuante;
+    $('r-ig').value=r.instagram||''; $('r-tt').value=r.tiktok||'';
+    links=clone(rascunho.links||[]); desenhaLinks();
+    document.querySelectorAll('.card.alterado').forEach(function(c){c.classList.remove('alterado');});
+  }
+  function normaliza(c){
+    c=c||{}; c.perfil=c.perfil||{}; c.aviso=c.aviso||{}; c.whatsapp=c.whatsapp||{}; c.redes=c.redes||{}; c.links=c.links||[]; return c;
+  }
+
+  /* ---------- LINKS ---------- */
+  var opIcones=Object.keys(ICONES).filter(function(k){return ['arrow','check'].indexOf(k)<0;})
+    .map(function(k){return '<option value="'+k+'">'+ICONES[k].nome+'</option>';}).join('');
+  function desenhaLinks(){
+    var h='';
+    links.forEach(function(l,i){
+      h+='<div class="lk'+(l.ativo===false?' off':'')+'" data-i="'+i+'">'+
+        '<div class="lk-top"><span class="lk-num">'+(i+1)+'</span><b>'+esc(l.titulo||'(sem título)')+'</b>'+
+        '<button class="btn mini" data-acao="sobe" title="Subir">↑</button><button class="btn mini" data-acao="desce" title="Descer">↓</button>'+
+        '<button class="btn mini perigo" data-acao="apaga" title="Excluir">Excluir</button></div>'+
+        '<div class="linha"><div class="campo"><label>Tipo</label><select data-k="tipo"><option value="link">Link</option><option value="pdf">PDF</option><option value="whatsapp">WhatsApp</option></select></div>'+
+        '<div class="campo"><label>Ícone</label><select data-k="icone">'+opIcones+'</select></div></div>'+
+        '<div class="linha"><div class="campo"><label>Nome do botão</label><input type="text" data-k="titulo" maxlength="60"></div>'+
+        '<div class="campo"><label>Descrição (opcional)</label><input type="text" data-k="descricao" maxlength="80"></div></div>'+
+        (l.tipo==='whatsapp'?'<p class="desc">Usa o número e a mensagem configurados na seção WhatsApp.</p>':
+         l.tipo==='pdf'?'<div class="campo"><label>Arquivo PDF</label><div class="pdfbox"><input type="text" data-k="url" placeholder="pdfs/arquivo.pdf ou https://..."><label class="btn arquivo">Enviar PDF<input type="file" accept="application/pdf" data-pdf></label></div><div class="prog"><i></i></div></div>':
+         '<div class="campo"><label>Endereço (URL)</label><input type="url" data-k="url" placeholder="https://"></div>')+
+        '<label class="chk"><input type="checkbox" data-k="destaque"> Destaque (botão brilhando)</label>'+
+        '<label class="chk"><input type="checkbox" data-k="ativo"> Visível</label>'+
+      '</div>';
+    });
+    $('lista').innerHTML=h||'<p class="desc">Nenhum botão. Clique em “Adicionar botão”.</p>';
+    $('lista').querySelectorAll('.lk').forEach(function(el){
+      var l=links[+el.dataset.i];
+      el.querySelectorAll('[data-k]').forEach(function(inp){
+        var k=inp.dataset.k;
+        if(inp.type==='checkbox') inp.checked = k==='ativo'? l.ativo!==false : !!l[k];
+        else inp.value = l[k]||(k==='icone'?'link':'');
+      });
+    });
+  }
+  function lerLinks(){
+    $('lista').querySelectorAll('.lk').forEach(function(el){
+      var l=links[+el.dataset.i];
+      el.querySelectorAll('[data-k]').forEach(function(inp){
+        l[inp.dataset.k] = inp.type==='checkbox'?inp.checked:inp.value.trim();
+      });
+    });
+  }
+  $('lista').addEventListener('click',function(e){
+    var b=e.target.closest('[data-acao]'); if(!b) return;
+    lerLinks(); var i=+b.closest('.lk').dataset.i, a=b.dataset.acao;
+    if(a==='sobe'&&i>0) links.splice(i-1,0,links.splice(i,1)[0]);
+    else if(a==='desce'&&i<links.length-1) links.splice(i+1,0,links.splice(i,1)[0]);
+    else if(a==='apaga'){ if(!confirm('Excluir o botão "'+(links[i].titulo||'')+'"?')) return; links.splice(i,1); }
+    else return;
+    desenhaLinks(); marca('links');
+  });
+  $('lista').addEventListener('change',function(e){
+    if(e.target.matches('[data-pdf]')) return enviarPDF(e.target);
+    if(e.target.dataset.k==='tipo'){
+      lerLinks(); var l=links[+e.target.closest('.lk').dataset.i];
+      if(l.tipo==='whatsapp') l.icone='whatsapp'; else if(l.tipo==='pdf') l.icone='pdf';
+      desenhaLinks();
+    }
+  });
+  $('add-link').onclick=function(){
+    lerLinks(); links.push({id:'l'+Date.now(),tipo:'link',titulo:'Novo botão',descricao:'',url:'https://',icone:'link',destaque:false,ativo:true});
+    desenhaLinks(); marca('links');
+    var u=$('lista').lastElementChild; u.scrollIntoView({behavior:'smooth',block:'center'}); u.querySelector('[data-k=titulo]').select();
+  };
+
+  /* ---------- MARCAR ALTERADO ---------- */
+  function marca(sec){$('sec-'+sec).classList.add('alterado');}
+  ['perfil','aviso','whatsapp','links','redes'].forEach(function(sec){
+    var el=$('sec-'+sec);
+    el.addEventListener('input',function(){marca(sec);});
+    el.addEventListener('change',function(){marca(sec);});
+  });
+  window.addEventListener('beforeunload',function(e){ if(document.querySelector('.card.alterado')){e.preventDefault();e.returnValue='';} });
+
+  /* ---------- SALVAR SEÇÃO ---------- */
+  var salvar={
+    perfil:function(){var p=rascunho.perfil;p.nome1=$('p-nome1').value.trim();p.nome2=$('p-nome2').value.trim();
+      p.frases=$('p-frases').value.split('\n').map(function(s){return s.trim();}).filter(Boolean).join('|');
+      p.logo=$('p-logo').value.trim()||'logo.svg';p.verificado=$('p-verif').checked;},
+    aviso:function(){var a=rascunho.aviso;a.ativo=$('a-ativo').checked;a.titulo=$('a-titulo').value.trim();a.estilo=$('a-estilo').value;a.texto=$('a-texto').value.trim();},
+    whatsapp:function(){var w=rascunho.whatsapp;w.numero=$('w-numero').value.replace(/\D/g,'');w.mensagem=$('w-mensagem').value.trim();w.flutuante=$('w-flut').checked;
+      $('w-numero').value=w.numero; if(w.numero && (w.numero.length<12||w.numero.length>13)) toast('Confira o número: use 55 + DDD + número',true);},
+    links:function(){lerLinks();
+      var ruim=links.filter(function(l){return l.ativo!==false && l.tipo==='link' && !/^https?:\/\/[^\s]+\.[^\s]+/i.test(l.url||'');});
+      if(ruim.length) toast('Atenção: "'+ruim[0].titulo+'" está sem um link válido (começando com https://)',true);
+      rascunho.links=clone(links);},
+    redes:function(){rascunho.redes.instagram=$('r-ig').value.trim().replace(/^@/,'');rascunho.redes.tiktok=$('r-tt').value.trim().replace(/^@/,'');}
+  };
+  document.querySelectorAll('[data-salvar]').forEach(function(b){
+    b.onclick=function(){
+      var sec=b.dataset.salvar; salvar[sec](); gravar(K_RASC,rascunho);
+      $('sec-'+sec).classList.remove('alterado'); enviaPrevia(); atualizaStatus();
+      if(sec==='links') desenhaLinks();
+      if(!$('toast').classList.contains('erro')||!$('toast').classList.contains('on')) toast('✔ Alteração salva — veja na prévia');
+    };
+  });
+
+  $('w-testar').onclick=function(){
+    var n=$('w-numero').value.replace(/\D/g,''); if(!n) return toast('Digite o número primeiro',true);
+    window.open('https://wa.me/'+n+'?text='+encodeURIComponent($('w-mensagem').value),'_blank','noopener');
+  };
+
+  /* ---------- GITHUB ---------- */
+  function preencheGH(){$('gh-owner').value=gh.owner;$('gh-repo').value=gh.repo;$('gh-branch').value=gh.branch;$('gh-token').value=gh.token;}
+  function lerGH(){gh={owner:$('gh-owner').value.trim(),repo:$('gh-repo').value.trim(),branch:$('gh-branch').value.trim()||'main',token:$('gh-token').value.trim()};}
+  function setConn(ok,txt){var c=$('conn');c.className='conn'+(ok?' ok':'');c.lastElementChild.textContent=txt;}
+  function api(caminho,opt){
+    opt=opt||{}; opt.headers={'Accept':'application/vnd.github+json','Authorization':'Bearer '+gh.token,'X-GitHub-Api-Version':'2022-11-28'};
+    return fetch('https://api.github.com/repos/'+encodeURIComponent(gh.owner)+'/'+encodeURIComponent(gh.repo)+caminho,opt);
+  }
+  function testar(silencioso){
+    if(!gh.token){setConn(false,'Sem token');return Promise.resolve(false);}
+    return api('').then(function(r){return r.ok?r.json():Promise.reject(r.status);}).then(function(j){
+      var pode=j.permissions&&j.permissions.push;
+      setConn(pode,pode?'Conectado':'Sem permissão de escrita'); if(!silencioso) toast(pode?'✔ Conectado ao GitHub':'Token sem permissão de escrita',!pode); return pode;
+    }).catch(function(s){setConn(false,'Falhou');if(!silencioso)toast('Não conectou ('+s+'). Confira usuário, repositório e token.',true);return false;});
+  }
+  $('salvar-conn').onclick=function(){lerGH();gravar(K_GH,gh);toast('✔ Conexão salva neste navegador');testar(true);};
+  $('testar-conn').onclick=function(){lerGH();testar(false);};
+
+  function b64Texto(str){var b=new TextEncoder().encode(str),s='';for(var i=0;i<b.length;i+=0x8000)s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(s);}
+  function b64Arquivo(file){return new Promise(function(ok,erro){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1]);};r.onerror=erro;r.readAsDataURL(file);});}
+  function enviaArquivo(caminho,base64,msg){
+    var rota='/contents/'+caminho.split('/').map(encodeURIComponent).join('/');
+    return api(rota+'?ref='+encodeURIComponent(gh.branch)).then(function(r){return r.ok?r.json():{};}).then(function(atual){
+      var corpo={message:msg,content:base64,branch:gh.branch}; if(atual.sha) corpo.sha=atual.sha;
+      return api(rota,{method:'PUT',body:JSON.stringify(corpo)});
+    }).then(function(r){ if(!r.ok) return r.json().then(function(j){throw new Error(j.message||r.status);}); return r.json(); });
+  }
+  function nomeSeguro(n){return n.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'');}
+  function precisaToken(){ if(!gh.token){toast('Configure a conexão com o GitHub primeiro (topo do painel)',true);$('sec-conexao').scrollIntoView({behavior:'smooth'});return true;} return false; }
+
+  function enviarPDF(inp){
+    var file=inp.files[0]; inp.value=''; if(!file) return;
+    if(precisaToken()) return;
+    if(file.type!=='application/pdf' && !/\.pdf$/i.test(file.name)) return toast('Escolha um arquivo .pdf',true);
+    if(file.size>45*1024*1024) return toast('PDF muito grande (máx. 45 MB)',true);
+    var box=inp.closest('.campo'), prog=box.querySelector('.prog'); prog.style.display='block';
+    var caminho='pdfs/'+nomeSeguro(file.name.replace(/\.pdf$/i,''))+'.pdf';
+    b64Arquivo(file).then(function(b){return enviaArquivo(caminho,b,'Envia PDF '+file.name);}).then(function(){
+      box.querySelector('[data-k=url]').value=caminho; marca('links');
+      toast('✔ PDF enviado! Agora clique em "Salvar alteração" dos botões');
+    }).catch(function(e){toast('Erro ao enviar PDF: '+e.message,true);}).then(function(){prog.style.display='none';});
+  }
+  $('p-logo-arq').onchange=function(){
+    var file=this.files[0]; this.value=''; if(!file||precisaToken()) return;
+    if(file.size>5*1024*1024) return toast('Imagem muito grande (máx. 5 MB)',true);
+    var ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z]/g,'');
+    var caminho='assets/logo-'+Date.now()+'.'+ext; $('p-logo-prog').style.display='block';
+    b64Arquivo(file).then(function(b){return enviaArquivo(caminho,b,'Envia nova logo');}).then(function(){
+      $('p-logo').value=caminho; marca('perfil'); toast('✔ Logo enviada! Clique em "Salvar alteração" do perfil');
+    }).catch(function(e){toast('Erro ao enviar logo: '+e.message,true);}).then(function(){$('p-logo-prog').style.display='none';});
+  };
+
+  /* ---------- GERAR LINK (PUBLICAR) ---------- */
+  function linkPublico(){
+    if(/\.github\.io$/i.test(location.hostname)) return location.origin+location.pathname.replace(/[^/]*$/,'');
+    return 'https://'+gh.owner.toLowerCase()+'.github.io/'+gh.repo+'/';
+  }
+  function abreModal(tit,desc){$('m-tit').textContent=tit;$('m-desc').textContent=desc;var l=linkPublico();$('m-link').value=l;$('m-abrir').href=l;$('modal').classList.add('on');}
+  $('gerar').onclick=function(){
+    if(document.querySelector('.card.alterado') && !confirm('Há seções com mudanças NÃO salvas (marcadas em amarelo). Elas não entrarão no link. Continuar mesmo assim?')) return;
+    if(JSON.stringify(rascunho)===JSON.stringify(publicado)) return abreModal('Seu link','Nada novo para publicar — este é o link da sua mini bio.');
+    if(precisaToken()) return;
+    var b=$('gerar'); b.disabled=true; b.textContent='Publicando…';
+    enviaArquivo('config.json',b64Texto(JSON.stringify(rascunho,null,2)+'\n'),'Atualiza mini bio pelo painel').then(function(){
+      publicado=clone(rascunho); gravar(K_PUB,publicado); atualizaStatus(); setConn(true,'Conectado');
+      abreModal('Link gerado! 🚀','Sua mini bio foi publicada. Copie o link e cole na bio do Instagram.');
+    }).catch(function(e){toast('Erro ao publicar: '+e.message,true);}).then(function(){b.disabled=false;b.textContent='🚀 Gerar link';});
+  };
+  $('m-copiar').onclick=function(){
+    var i=$('m-link'); i.select();
+    (navigator.clipboard?navigator.clipboard.writeText(i.value):Promise.reject()).then(function(){toast('✔ Link copiado!');},function(){document.execCommand('copy');toast('✔ Link copiado!');});
+  };
+  $('m-fechar').onclick=function(){$('modal').classList.remove('on');};
+  $('modal').onclick=function(e){if(e.target===this)this.classList.remove('on');};
+
+  $('descartar').onclick=function(){
+    if(!confirm('Descartar todas as alterações salvas e voltar para a versão que está online?')) return;
+    rascunho=clone(publicado); localStorage.removeItem(K_RASC); preencher(); enviaPrevia(); atualizaStatus(); toast('Rascunho descartado');
+  };
+
+  /* ---------- INÍCIO ---------- */
+  preencheGH();
+  fetch('config.json?v='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(c){
+    publicado=normaliza(c);
+    // se o último publish ainda não refletiu no site (cache), usa a cópia local publicada
+    var pubLocal=lerJSON(K_PUB); if(pubLocal && JSON.stringify(pubLocal)!==JSON.stringify(publicado) && lerJSON(K_RASC)) publicado=normaliza(pubLocal);
+  }).catch(function(){ publicado=normaliza(lerJSON(K_PUB)||{}); }).then(function(){
+    rascunho=normaliza(lerJSON(K_RASC)||clone(publicado));
+    preencher(); atualizaStatus(); enviaPrevia(); testar(true);
+  });
+})();
+</script>
+</body>
+</html>
